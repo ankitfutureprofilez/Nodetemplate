@@ -3,10 +3,9 @@ const Users = require("../Model/user");
 
 
 exports.productadd = async (req, res) => {
-
     try {
-        // const userId = req.Users.userId;
-        // console.log("userId",userId)
+       const userId =req.user.userId;
+        console.log("userId",userId)
         const { name, img, price, discount, Emi, descrption, role } = req.body;
         const lastProduct = await Products.findOne({}, "productId").sort({ productId: -1 });
         const newproductId = lastProduct ? lastProduct.productId + 1 : 1;
@@ -19,6 +18,7 @@ exports.productadd = async (req, res) => {
             Emi: Emi,
             descrption: descrption,
             role: role,
+            userId:userId
         });
         const result = await record.save();
         res.json({
@@ -27,6 +27,7 @@ exports.productadd = async (req, res) => {
             msg: "product Add",
         });
     } catch (error) {
+        console.log("wewee",error)
         res.json({
             error: error,
             msg: "product not add",
